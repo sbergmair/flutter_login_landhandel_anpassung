@@ -88,7 +88,9 @@ class _RecoverCardState extends State<_RecoverCard>
   Widget _buildRecoverNameField(
       double width, LoginMessages messages, Auth auth) {
     return AnimatedTextFormField(
-      controller: _nameController,
+      controller: messages.recoverPwUserHint == null
+          ? _nameController
+          : TextEditingController(),
       loadingController: widget.loadingController,
       width: width,
       labelText: messages.recoverPwUserHint ?? messages.userHint,
@@ -98,7 +100,9 @@ class _RecoverCardState extends State<_RecoverCard>
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.userValidator,
-      onSaved: (value) => auth.email = value!,
+      onSaved: messages.recoverPwUserHint == null
+          ? (value) => auth.email = value!
+          : (_) {},
     );
   }
 
