@@ -40,7 +40,12 @@ class _RecoverCardState extends State<_RecoverCard>
     super.initState();
 
     final auth = Provider.of<Auth>(context, listen: false);
-    _nameController = TextEditingController(text: auth.email);
+
+    final messages = Provider.of<LoginMessages>(context, listen: false);
+
+    // If recoverPwUserHint is set, then the logic needs to be split
+    _nameController = TextEditingController(
+        text: messages.recoverPwUserHint == null ? auth.email : '');
 
     _submitController = AnimationController(
       vsync: this,

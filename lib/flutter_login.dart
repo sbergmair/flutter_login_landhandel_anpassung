@@ -26,15 +26,16 @@ import 'src/widgets/gradient_box.dart';
 import 'src/widgets/hero_text.dart';
 import 'theme.dart';
 
+export 'package:sign_in_button/src/button_list.dart';
+
 export 'src/models/login_data.dart';
 export 'src/models/login_user_type.dart';
 export 'src/models/signup_data.dart';
+export 'src/models/term_of_service.dart';
 export 'src/models/user_form_field.dart';
+export 'src/providers/auth.dart';
 export 'src/providers/login_messages.dart';
 export 'src/providers/login_theme.dart';
-export 'src/models/term_of_service.dart';
-export 'src/providers/auth.dart';
-export 'package:sign_in_button/src/button_list.dart';
 
 class LoginProvider {
   /// Used for custom sign-in buttons.
@@ -280,6 +281,7 @@ class FlutterLogin extends StatefulWidget {
       this.messages,
       this.theme,
       this.userValidator,
+      this.passwordForgotUserValidator,
       this.passwordValidator,
       this.onSubmitAnimationCompleted,
       this.logoTag,
@@ -345,6 +347,10 @@ class FlutterLogin extends StatefulWidget {
   /// Email validating logic, Returns an error string to display if the input is
   /// invalid, or null otherwise
   final FormFieldValidator<String>? userValidator;
+
+  /// Email validating logic, Returns an error string to display if the input is
+  /// invalid, or null otherwise
+  final FormFieldValidator<String>? passwordForgotUserValidator;
 
   /// Same as [userValidator] but for password
   final FormFieldValidator<String>? passwordValidator;
@@ -732,6 +738,10 @@ class _FlutterLoginState extends State<FlutterLogin>
     final passwordValidator =
         widget.passwordValidator ?? FlutterLogin.defaultPasswordValidator;
 
+    final passwordForgotUserValidator = widget.passwordForgotUserValidator ??
+        widget.userValidator ??
+        FlutterLogin.defaultEmailValidator;
+
     Widget footerWidget = const SizedBox();
     if (widget.footer != null) {
       footerWidget = Padding(
@@ -794,6 +804,8 @@ class _FlutterLoginState extends State<FlutterLogin>
                         padding: EdgeInsets.only(top: cardTopPosition),
                         loadingController: _loadingController,
                         userValidator: userValidator,
+                        passwordForgotUserValidator:
+                            passwordForgotUserValidator,
                         passwordValidator: passwordValidator,
                         onSubmit: _reverseHeaderAnimation,
                         onSubmitCompleted: widget.onSubmitAnimationCompleted,
