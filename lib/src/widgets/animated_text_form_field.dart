@@ -299,9 +299,25 @@ class _AnimatedPasswordTextFormFieldState
     extends State<AnimatedPasswordTextFormField> {
   var _obscureText = true;
 
+  final textFieldPadding = const EdgeInsets.all(8.0);
+  final textFieldTextStyle = const TextStyle(fontSize: 30.0);
+
+  final GlobalKey _textFieldKey = GlobalKey();
+
+  double _textWidth = 0.0;
+  double _fontSize = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fontSize = textFieldTextStyle.fontSize ?? 0.0;
+    widget.controller?.addListener(_onTextChanged);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedTextFormField(
+      key: _textFieldKey,
       interval: widget.interval,
       loadingController: widget.loadingController,
       inertiaController: widget.inertiaController,
@@ -349,5 +365,40 @@ class _AnimatedPasswordTextFormFieldState
       onSaved: widget.onSaved,
       inertiaDirection: widget.inertiaDirection,
     );
+  }
+
+  void _onTextChanged() {
+    // substract text field padding to get available space
+    final inputWidth = (_textFieldKey.currentContext?.size?.width ?? 0.0) -
+        textFieldPadding.horizontal;
+
+    // calculate width of text using text painter
+    final textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+      text: TextSpan(
+        text: widget.controller?.text,
+        style: textFieldTextStyle,
+      ),
+    );
+    textPainter.layout();
+
+    var textWidth = textPainter.width;
+    var fontSize = textFieldTextStyle.fontSize ?? 0.0;
+
+    // not really efficient and doesn't find the perfect size, but you got all you need!
+    while (textWidth > inputWidth && fontSize > 1.0) {
+      fontSize -= 0.5;
+      textPainter.text = TextSpan(
+        text: widget.controller?.text,
+        style: textFieldTextStyle.copyWith(fontSize: fontSize),
+      );
+      textPainter.layout();
+      textWidth = textPainter.width;
+    }
+
+    setState(() {
+      _textWidth = textPainter.width;
+      _fontSize = fontSize;
+    });
   }
 }
