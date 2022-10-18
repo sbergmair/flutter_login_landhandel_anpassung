@@ -82,11 +82,20 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   late Animation<double> iconRotationAnimation;
   late Animation<double> iconTranslateAnimation;
 
+  // final textFieldPadding = const EdgeInsets.all(8.0);
+  final textFieldTextStyle = const TextStyle(fontSize: 16);
+
+  final GlobalKey _textFieldKey = GlobalKey();
+
+  double _fontSize = 0.0;
+
   @override
   void initState() {
     super.initState();
-
     widget.inertiaController?.addStatusListener(handleAnimationStatus);
+
+    _fontSize = textFieldTextStyle.fontSize ?? 0.0;
+    widget.controller?.addListener(_onTextChanged);
 
     final interval = widget.interval;
     final loadingController = widget.loadingController;
@@ -202,6 +211,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
               child: widget.suffixIcon,
             )
           : widget.suffixIcon),
+      labelStyle: TextStyle(),
     );
   }
 
@@ -209,6 +219,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Widget textField = TextFormField(
+      key: _textFieldKey,
       cursorColor: theme.primaryColor,
       controller: widget.controller,
       focusNode: widget.focusNode,
@@ -218,6 +229,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
       obscureText: widget.obscureText,
       onFieldSubmitted: widget.onFieldSubmitted,
       onSaved: widget.onSaved,
+      style: textFieldTextStyle.copyWith(fontSize: _fontSize),
       validator: widget.validator,
       enabled: widget.enabled,
       autocorrect: widget.autocorrect,
@@ -250,6 +262,39 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
     }
 
     return textField;
+  }
+
+  void _onTextChanged() {
+    // substract text field padding to get available space
+    final inputWidth = (_textFieldKey.currentContext?.size?.width ?? 0.0);
+
+    // calculate width of text using text painter
+    final textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+      text: TextSpan(
+        text: widget.controller?.text,
+        style: textFieldTextStyle,
+      ),
+    );
+    textPainter.layout();
+
+    var textWidth = textPainter.width;
+    var fontSize = textFieldTextStyle.fontSize ?? 0.0;
+
+    // not really efficient and doesn't find the perfect size, but you got all you need!
+    while (textWidth > inputWidth && fontSize > 1.0) {
+      fontSize -= 1;
+      textPainter.text = TextSpan(
+        text: widget.controller?.text,
+        style: textFieldTextStyle.copyWith(fontSize: fontSize),
+      );
+      textPainter.layout();
+      textWidth = textPainter.width;
+    }
+
+    setState(() {
+      _fontSize = fontSize;
+    });
   }
 }
 
