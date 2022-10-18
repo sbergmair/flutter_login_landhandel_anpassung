@@ -193,6 +193,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
 
   InputDecoration _getInputDecoration(ThemeData theme) {
     return InputDecoration(
+      contentPadding: EdgeInsets.zero,
       labelText: widget.labelText,
       prefixIcon: _buildInertiaAnimation(widget.prefixIcon),
       suffixIcon: _buildInertiaAnimation(widget.loadingController != null
