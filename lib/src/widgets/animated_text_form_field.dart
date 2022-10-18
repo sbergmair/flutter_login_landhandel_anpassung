@@ -83,7 +83,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   late Animation<double> iconTranslateAnimation;
 
   // final textFieldPadding = const EdgeInsets.all(8.0);
-  final textFieldTextStyle = const TextStyle(fontSize: 12);
+  final textFieldTextStyle = const TextStyle(fontSize: 16);
 
   final GlobalKey _textFieldKey = GlobalKey();
 
@@ -92,7 +92,6 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   @override
   void initState() {
     super.initState();
-
     widget.inertiaController?.addStatusListener(handleAnimationStatus);
 
     _fontSize = textFieldTextStyle.fontSize ?? 0.0;
