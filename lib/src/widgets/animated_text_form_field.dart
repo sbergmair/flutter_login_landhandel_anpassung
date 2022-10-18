@@ -82,12 +82,11 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   late Animation<double> iconRotationAnimation;
   late Animation<double> iconTranslateAnimation;
 
-  final textFieldPadding = const EdgeInsets.all(8.0);
-  final textFieldTextStyle = const TextStyle(fontSize: 30.0);
+  // final textFieldPadding = const EdgeInsets.all(8.0);
+  final textFieldTextStyle = const TextStyle();
 
   final GlobalKey _textFieldKey = GlobalKey();
 
-  double _textWidth = 0.0;
   double _fontSize = 0.0;
 
   @override
@@ -212,6 +211,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
               child: widget.suffixIcon,
             )
           : widget.suffixIcon),
+      labelStyle: TextStyle(),
     );
   }
 
@@ -266,8 +266,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
 
   void _onTextChanged() {
     // substract text field padding to get available space
-    final inputWidth = (_textFieldKey.currentContext?.size?.width ?? 0.0) -
-        textFieldPadding.horizontal;
+    final inputWidth = (_textFieldKey.currentContext?.size?.width ?? 0.0);
 
     // calculate width of text using text painter
     final textPainter = TextPainter(
@@ -284,7 +283,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
 
     // not really efficient and doesn't find the perfect size, but you got all you need!
     while (textWidth > inputWidth && fontSize > 1.0) {
-      fontSize -= 0.5;
+      fontSize -= 1;
       textPainter.text = TextSpan(
         text: widget.controller?.text,
         style: textFieldTextStyle.copyWith(fontSize: fontSize),
@@ -294,7 +293,6 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
     }
 
     setState(() {
-      _textWidth = textPainter.width;
       _fontSize = fontSize;
     });
   }
