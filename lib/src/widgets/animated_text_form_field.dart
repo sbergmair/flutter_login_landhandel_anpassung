@@ -83,7 +83,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField> {
   late Animation<double> iconTranslateAnimation;
 
   // final textFieldPadding = const EdgeInsets.all(8.0);
-  final textFieldTextStyle = const TextStyle();
+  final textFieldTextStyle = const TextStyle(fontSize: 12);
 
   final GlobalKey _textFieldKey = GlobalKey();
 
