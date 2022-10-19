@@ -30,6 +30,7 @@ export 'package:sign_in_button/src/button_list.dart';
 
 export 'src/models/login_data.dart';
 export 'src/models/login_user_type.dart';
+export 'src/models/recover_data_two_fields.dart';
 export 'src/models/signup_data.dart';
 export 'src/models/term_of_service.dart';
 export 'src/models/user_form_field.dart';
@@ -273,7 +274,7 @@ class FlutterLogin extends StatefulWidget {
       {Key? key,
       this.onSignup,
       required this.onLogin,
-      required this.onRecoverPassword,
+      this.onRecoverPassword,
       this.title,
 
       /// The [ImageProvider] or asset path [String] for the logo image to be displayed
@@ -300,7 +301,7 @@ class FlutterLogin extends StatefulWidget {
       this.navigateBackAfterRecovery = false,
       this.termsOfService = const <TermOfService>[],
       this.onConfirmRecover,
-      this.onConfirmRecoverTwoFields,
+      this.onRecoverTwoFields,
       this.onConfirmSignup,
       this.onResendCode,
       this.savedEmail = '',
@@ -310,7 +311,7 @@ class FlutterLogin extends StatefulWidget {
       this.scrollable = false})
       : assert((logo is String?) || (logo is ImageProvider?)),
         logo = logo is String ? AssetImage(logo) : logo,
-        assert(onConfirmRecover == null || onConfirmRecoverTwoFields == null),
+        assert(onRecoverPassword == null || onRecoverTwoFields == null),
         super(key: key);
 
   /// Called when the user hit the submit button when in sign up mode
@@ -333,7 +334,11 @@ class FlutterLogin extends StatefulWidget {
   final List<LoginProvider> loginProviders;
 
   /// Called when the user hit the submit button when in recover password mode
-  final RecoverCallback onRecoverPassword;
+  final RecoverCallback? onRecoverPassword;
+
+  /// Called when the user submits confirmation code in recover password mode with two fields
+  /// Optional
+  final RecoverTwoFieldsCallback? onRecoverTwoFields;
 
   /// The large text above the login [Card], usually the app or company name
   final String? title;
@@ -407,10 +412,6 @@ class FlutterLogin extends StatefulWidget {
   /// Called when the user submits confirmation code in recover password mode
   /// Optional
   final ConfirmRecoverCallback? onConfirmRecover;
-
-  /// Called when the user submits confirmation code in recover password mode with two fields
-  /// Optional
-  final RecoverTwoFieldsCallback? onConfirmRecoverTwoFields;
 
   /// Called when the user hits the submit button when in confirm signup mode
   /// Optional
@@ -781,6 +782,7 @@ class _FlutterLoginState extends State<FlutterLogin>
             onLogin: widget.onLogin,
             onSignup: widget.onSignup,
             onRecoverPassword: widget.onRecoverPassword,
+            onRecoverWithTwoFields: widget.onRecoverTwoFields,
             loginProviders: widget.loginProviders,
             email: widget.savedEmail,
             password: widget.savedPassword,
