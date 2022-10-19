@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/src/models/recover_data_two_fields.dart';
 
 import '../../flutter_login.dart';
 
@@ -9,6 +10,11 @@ enum AuthType { provider, userPassword }
 /// The callback triggered after login
 /// The result is an error message, callback successes if message is null
 typedef LoginCallback = Future<String?>? Function(LoginData);
+
+/// The callback triggered after recover password with 2 fields
+/// The result is an error message, callback successes if message is null
+typedef RecoverTwoFieldsCallback = Future<String?>? Function(
+    RecoverDataTwoFields);
 
 /// The callback triggered after signup
 /// The result is an error message, callback successes if message is null
@@ -41,6 +47,7 @@ class Auth with ChangeNotifier {
   Auth(
       {this.loginProviders = const [],
       this.onLogin,
+      this.onRecoverWithTwoFields,
       this.onSignup,
       this.onRecoverPassword,
       this.onConfirmRecover,
@@ -57,6 +64,7 @@ class Auth with ChangeNotifier {
         _mode = initialAuthMode;
 
   final LoginCallback? onLogin;
+  final RecoverTwoFieldsCallback? onRecoverWithTwoFields;
   final SignupCallback? onSignup;
   final RecoverCallback? onRecoverPassword;
   final List<LoginProvider> loginProviders;
@@ -102,6 +110,13 @@ class Auth with ChangeNotifier {
   String get email => _email;
   set email(String email) {
     _email = email;
+    notifyListeners();
+  }
+
+  String _secondRecoveryField = '';
+  String get secondRecoveryField => _secondRecoveryField;
+  set secondRecoveryField(String secondRecovery) {
+    _secondRecoveryField = secondRecovery;
     notifyListeners();
   }
 

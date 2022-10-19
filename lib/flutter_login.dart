@@ -281,6 +281,8 @@ class FlutterLogin extends StatefulWidget {
       this.messages,
       this.theme,
       this.userValidator,
+      this.secondFieldType,
+      this.secondFieldValidator,
       this.passwordForgotUserValidator,
       this.passwordValidator,
       this.onSubmitAnimationCompleted,
@@ -298,6 +300,7 @@ class FlutterLogin extends StatefulWidget {
       this.navigateBackAfterRecovery = false,
       this.termsOfService = const <TermOfService>[],
       this.onConfirmRecover,
+      this.onConfirmRecoverTwoFields,
       this.onConfirmSignup,
       this.onResendCode,
       this.savedEmail = '',
@@ -307,6 +310,7 @@ class FlutterLogin extends StatefulWidget {
       this.scrollable = false})
       : assert((logo is String?) || (logo is ImageProvider?)),
         logo = logo is String ? AssetImage(logo) : logo,
+        assert(onConfirmRecover == null || onConfirmRecoverTwoFields == null),
         super(key: key);
 
   /// Called when the user hit the submit button when in sign up mode
@@ -320,6 +324,8 @@ class FlutterLogin extends StatefulWidget {
   /// [LoginUserType] can be email, name or phone, by default is email. It will change how
   /// the edit text autofill and behave accordingly to your choice
   final LoginUserType userType;
+
+  final LoginUserType? secondFieldType;
 
   /// list of LoginProvider each have an icon and a callback that will be Called when
   /// the user hit the provider icon button
@@ -347,6 +353,8 @@ class FlutterLogin extends StatefulWidget {
   /// Email validating logic, Returns an error string to display if the input is
   /// invalid, or null otherwise
   final FormFieldValidator<String>? userValidator;
+
+  final FormFieldValidator<String>? secondFieldValidator;
 
   /// Email validating logic, Returns an error string to display if the input is
   /// invalid, or null otherwise
@@ -399,6 +407,10 @@ class FlutterLogin extends StatefulWidget {
   /// Called when the user submits confirmation code in recover password mode
   /// Optional
   final ConfirmRecoverCallback? onConfirmRecover;
+
+  /// Called when the user submits confirmation code in recover password mode with two fields
+  /// Optional
+  final RecoverTwoFieldsCallback? onConfirmRecoverTwoFields;
 
   /// Called when the user hits the submit button when in confirm signup mode
   /// Optional
@@ -735,6 +747,8 @@ class _FlutterLoginState extends State<FlutterLogin>
     final headerHeight = cardTopPosition - headerMargin;
     final userValidator =
         widget.userValidator ?? FlutterLogin.defaultEmailValidator;
+
+    final secondFieldValidator = widget.secondFieldValidator;
     final passwordValidator =
         widget.passwordValidator ?? FlutterLogin.defaultPasswordValidator;
 
@@ -801,6 +815,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                       child: AuthCard(
                         key: authCardKey,
                         userType: widget.userType,
+                        secondFieldType: widget.secondFieldType,
                         padding: EdgeInsets.only(top: cardTopPosition),
                         loadingController: _loadingController,
                         userValidator: userValidator,
@@ -821,6 +836,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                         navigateBackAfterRecovery:
                             widget.navigateBackAfterRecovery,
                         scrollable: widget.scrollable,
+                        secondFieldValidator: secondFieldValidator,
                       ),
                     ),
                     Positioned(

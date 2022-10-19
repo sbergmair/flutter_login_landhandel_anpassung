@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import '../../../flutter_login.dart';
+import '../../models/recover_data_two_fields.dart';
 import '../animated_button.dart';
 import '../animated_icon.dart';
 import '../animated_text.dart';
@@ -33,31 +34,34 @@ part 'recover_confirm_card.dart';
 part 'signup_confirm_card.dart';
 
 class AuthCard extends StatefulWidget {
-  const AuthCard(
-      {Key? key,
-      required this.userType,
-      this.padding = const EdgeInsets.all(0),
-      required this.loadingController,
-      this.userValidator,
-      this.passwordForgotUserValidator,
-      this.passwordValidator,
-      this.onSubmit,
-      this.onSubmitCompleted,
-      this.hideForgotPasswordButton = false,
-      this.hideSignUpButton = false,
-      this.loginAfterSignUp = true,
-      this.hideProvidersTitle = false,
-      this.additionalSignUpFields,
-      this.disableCustomPageTransformer = false,
-      this.loginTheme,
-      this.navigateBackAfterRecovery = false,
-      required this.scrollable})
-      : super(key: key);
+  const AuthCard({
+    Key? key,
+    required this.userType,
+    this.secondFieldType,
+    this.padding = const EdgeInsets.all(0),
+    required this.loadingController,
+    this.userValidator,
+    this.passwordForgotUserValidator,
+    this.passwordValidator,
+    this.onSubmit,
+    this.onSubmitCompleted,
+    this.hideForgotPasswordButton = false,
+    this.hideSignUpButton = false,
+    this.loginAfterSignUp = true,
+    this.hideProvidersTitle = false,
+    this.additionalSignUpFields,
+    this.disableCustomPageTransformer = false,
+    this.loginTheme,
+    this.navigateBackAfterRecovery = false,
+    required this.scrollable,
+    this.secondFieldValidator,
+  }) : super(key: key);
 
   final EdgeInsets padding;
   final AnimationController loadingController;
   final FormFieldValidator<String>? userValidator;
   final FormFieldValidator<String>? passwordForgotUserValidator;
+  final FormFieldValidator<String>? secondFieldValidator;
   final FormFieldValidator<String>? passwordValidator;
   final Function? onSubmit;
   final Function? onSubmitCompleted;
@@ -65,6 +69,7 @@ class AuthCard extends StatefulWidget {
   final bool hideSignUpButton;
   final bool loginAfterSignUp;
   final LoginUserType userType;
+  final LoginUserType? secondFieldType;
   final bool hideProvidersTitle;
 
   final List<UserFormField>? additionalSignUpFields;
@@ -349,7 +354,9 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         return _RecoverCard(
             userValidator:
                 widget.passwordForgotUserValidator ?? widget.userValidator,
+            secondFieldValidator: widget.secondFieldValidator,
             userType: widget.userType,
+            secondFieldType: widget.secondFieldType,
             loginTheme: widget.loginTheme,
             loadingController: formController,
             navigateBack: widget.navigateBackAfterRecovery,

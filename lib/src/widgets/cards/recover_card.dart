@@ -1,20 +1,24 @@
 part of auth_card_builder;
 
 class _RecoverCard extends StatefulWidget {
-  const _RecoverCard(
-      {Key? key,
-      required this.userValidator,
-      required this.onBack,
-      required this.userType,
-      this.loginTheme,
-      required this.navigateBack,
-      required this.onSubmitCompleted,
-      required this.loadingController})
-      : super(key: key);
+  const _RecoverCard({
+    Key? key,
+    required this.userValidator,
+    required this.onBack,
+    required this.userType,
+    this.secondFieldType,
+    this.loginTheme,
+    required this.navigateBack,
+    required this.onSubmitCompleted,
+    required this.loadingController,
+    this.secondFieldValidator,
+  }) : super(key: key);
 
   final FormFieldValidator<String>? userValidator;
+  final FormFieldValidator<String>? secondFieldValidator;
   final Function onBack;
   final LoginUserType userType;
+  final LoginUserType? secondFieldType;
   final LoginTheme? loginTheme;
   final bool navigateBack;
   final AnimationController loadingController;
@@ -32,8 +36,11 @@ class _RecoverCardState extends State<_RecoverCard>
   bool _isSubmitting = false;
 
   late TextEditingController _nameController;
+  TextEditingController? _secondFieldController;
 
   late AnimationController _submitController;
+
+  bool _isRecoverWithTwoFields = false;
 
   @override
   void initState() {
@@ -46,6 +53,11 @@ class _RecoverCardState extends State<_RecoverCard>
     // If recoverPwUserHint is set, then the logic needs to be split
     _nameController = TextEditingController(
         text: messages.recoverPwUserHint == null ? auth.email : '');
+
+    if (messages.secondRecoveryFieldHint != null) {
+      _isRecoverWithTwoFields = true;
+      _secondFieldController = TextEditingController();
+    }
 
     _submitController = AnimationController(
       vsync: this,
@@ -69,8 +81,13 @@ class _RecoverCardState extends State<_RecoverCard>
     _formRecoverKey.currentState!.save();
     await _submitController.forward();
     setState(() => _isSubmitting = true);
-    final error = await auth.onRecoverPassword!(auth.email);
-
+    final String? error;
+    if (_isRecoverWithTwoFields) {
+      error = await auth.onRecoverWithTwoFields!(RecoverDataTwoFields(
+          mail: auth.email, customerNumber: auth.secondRecoveryField));
+    } else {
+      error = await auth.onRecoverPassword!(auth.email);
+    }
     if (error != null) {
       showErrorToast(context, messages.flushbarTitleError, error);
       setState(() => _isSubmitting = false);
@@ -83,6 +100,29 @@ class _RecoverCardState extends State<_RecoverCard>
       widget.onSubmitCompleted();
       return true;
     }
+  }
+
+  Widget _buildRecoverSecondField(
+      double width, LoginMessages messages, Auth auth) {
+    return AnimatedTextFormField(
+      controller: _secondFieldController,
+      loadingController: widget.loadingController,
+      width: width,
+      labelText: messages.secondRecoveryFieldHint,
+      prefixIcon: const Icon(FontAwesomeIcons.solidCircleUser),
+      keyboardType: widget.secondFieldType != null
+          ? TextFieldUtils.getKeyboardType(widget.secondFieldType!)
+          : null,
+      autofillHints: widget.secondFieldType != null
+          ? [TextFieldUtils.getAutofillHints(widget.secondFieldType!)]
+          : null,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (value) => _submit(),
+      validator: widget.secondFieldValidator,
+      onSaved: messages.secondRecoveryFieldHint != null
+          ? (value) => auth.secondRecoveryField = value!
+          : (_) {},
+    );
   }
 
   Widget _buildRecoverNameField(
@@ -98,7 +138,7 @@ class _RecoverCardState extends State<_RecoverCard>
       keyboardType: TextFieldUtils.getKeyboardType(widget.userType),
       autofillHints: [TextFieldUtils.getAutofillHints(widget.userType)],
       textInputAction: TextInputAction.done,
-      onFieldSubmitted: (value) => _submit(),
+      onFieldSubmitted: _isRecoverWithTwoFields ? null : (value) => _submit(),
       validator: widget.userValidator,
       onSaved: messages.recoverPwUserHint == null
           ? (value) => auth.email = value!
@@ -168,14 +208,17 @@ class _RecoverCardState extends State<_RecoverCard>
                 const SizedBox(height: 20),
                 _buildRecoverNameField(textFieldWidth, messages, auth),
                 const SizedBox(height: 20),
-                Text(
-                  auth.onConfirmRecover != null
-                      ? messages.recoverCodePasswordDescription
-                      : messages.recoverPasswordDescription,
-                  key: kRecoverPasswordDescriptionKey,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText2,
-                ),
+                if (!_isRecoverWithTwoFields)
+                  Text(
+                    auth.onConfirmRecover != null
+                        ? messages.recoverCodePasswordDescription
+                        : messages.recoverPasswordDescription,
+                    key: kRecoverPasswordDescriptionKey,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyText2,
+                  ),
+                if (_isRecoverWithTwoFields)
+                  _buildRecoverSecondField(textFieldWidth, messages, auth),
                 const SizedBox(height: 26),
                 _buildRecoverButton(theme, messages),
                 _buildBackButton(theme, messages, widget.loginTheme),

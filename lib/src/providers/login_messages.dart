@@ -1,43 +1,44 @@
 import 'package:flutter/material.dart';
 
 class LoginMessages with ChangeNotifier {
-  LoginMessages(
-      {this.userHint,
-      this.passwordHint = defaultPasswordHint,
-      this.confirmPasswordHint = defaultConfirmPasswordHint,
-      this.forgotPasswordButton = defaultForgotPasswordButton,
-      this.loginButton = defaultLoginButton,
-      this.signupButton = defaultSignupButton,
-      this.recoverPasswordButton = defaultRecoverPasswordButton,
-      this.recoverPasswordIntro = defaultRecoverPasswordIntro,
-      this.recoverPasswordDescription = defaultRecoverPasswordDescription,
-      this.goBackButton = defaultGoBackButton,
-      this.confirmPasswordError = defaultConfirmPasswordError,
-      this.recoverPasswordSuccess = defaultRecoverPasswordSuccess,
-      this.flushbarTitleError = defaultflushbarTitleError,
-      this.flushbarTitleSuccess = defaultflushbarTitleSuccess,
-      this.signUpSuccess = defaultSignUpSuccess,
-      this.providersTitleFirst = defaultProvidersTitleFirst,
-      this.providersTitleSecond = defaultProvidersTitleSecond,
-      this.additionalSignUpSubmitButton = defaultAdditionalSignUpSubmitButton,
-      this.additionalSignUpFormDescription =
-          defaultAdditionalSignUpFormDescription,
-      this.confirmSignupIntro = defaultConfirmSignupIntro,
-      this.confirmationCodeHint = defaultConfirmationCodeHint,
-      this.confirmationCodeValidationError =
-          defaultConfirmationCodeValidationError,
-      this.resendCodeButton = defaultResendCodeButton,
-      this.resendCodeSuccess = defaultResendCodeSuccess,
-      this.confirmSignupButton = defaultConfirmSignupButton,
-      this.confirmSignupSuccess = defaultConfirmSignupSuccess,
-      this.confirmRecoverIntro = defaultConfirmRecoverIntro,
-      this.recoveryCodeHint = defaultRecoveryCodeHint,
-      this.recoveryCodeValidationError = defaultRecoveryCodeValidationError,
-      this.setPasswordButton = defaultSetPasswordButton,
-      this.confirmRecoverSuccess = defaultConfirmRecoverSuccess,
-      this.recoverCodePasswordDescription =
-          defaultRecoverCodePasswordDescription,
-      this.recoverPwUserHint,});
+  LoginMessages({
+    this.userHint,
+    this.passwordHint = defaultPasswordHint,
+    this.confirmPasswordHint = defaultConfirmPasswordHint,
+    this.forgotPasswordButton = defaultForgotPasswordButton,
+    this.loginButton = defaultLoginButton,
+    this.signupButton = defaultSignupButton,
+    this.recoverPasswordButton = defaultRecoverPasswordButton,
+    this.recoverPasswordIntro = defaultRecoverPasswordIntro,
+    this.recoverPasswordDescription = defaultRecoverPasswordDescription,
+    this.goBackButton = defaultGoBackButton,
+    this.confirmPasswordError = defaultConfirmPasswordError,
+    this.recoverPasswordSuccess = defaultRecoverPasswordSuccess,
+    this.flushbarTitleError = defaultflushbarTitleError,
+    this.flushbarTitleSuccess = defaultflushbarTitleSuccess,
+    this.signUpSuccess = defaultSignUpSuccess,
+    this.providersTitleFirst = defaultProvidersTitleFirst,
+    this.providersTitleSecond = defaultProvidersTitleSecond,
+    this.additionalSignUpSubmitButton = defaultAdditionalSignUpSubmitButton,
+    this.additionalSignUpFormDescription =
+        defaultAdditionalSignUpFormDescription,
+    this.confirmSignupIntro = defaultConfirmSignupIntro,
+    this.confirmationCodeHint = defaultConfirmationCodeHint,
+    this.confirmationCodeValidationError =
+        defaultConfirmationCodeValidationError,
+    this.resendCodeButton = defaultResendCodeButton,
+    this.resendCodeSuccess = defaultResendCodeSuccess,
+    this.confirmSignupButton = defaultConfirmSignupButton,
+    this.confirmSignupSuccess = defaultConfirmSignupSuccess,
+    this.confirmRecoverIntro = defaultConfirmRecoverIntro,
+    this.recoveryCodeHint = defaultRecoveryCodeHint,
+    this.recoveryCodeValidationError = defaultRecoveryCodeValidationError,
+    this.setPasswordButton = defaultSetPasswordButton,
+    this.confirmRecoverSuccess = defaultConfirmRecoverSuccess,
+    this.recoverCodePasswordDescription = defaultRecoverCodePasswordDescription,
+    this.recoverPwUserHint,
+    this.secondRecoveryFieldHint,
+  });
 
   static const defaultPasswordHint = 'Password';
   static const defaultConfirmPasswordHint = 'Confirm Password';
@@ -181,4 +182,6 @@ class LoginMessages with ChangeNotifier {
   final String recoverCodePasswordDescription;
 
   final String? recoverPwUserHint;
+
+  final String? secondRecoveryFieldHint;
 }
