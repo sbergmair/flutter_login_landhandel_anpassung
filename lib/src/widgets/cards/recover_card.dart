@@ -87,7 +87,9 @@ class _RecoverCardState extends State<_RecoverCard>
     final String? error;
     if (_isRecoverWithTwoFields) {
       error = await auth.onRecoverWithTwoFields!(RecoverDataTwoFields(
-          mail: auth.userName, customerNumber: auth.secondRecoveryField,));
+        mail: auth.userName,
+        customerNumber: auth.secondRecoveryField,
+      ));
     } else {
       error = await auth.onRecoverPassword!(auth.userName);
     }
@@ -122,9 +124,7 @@ class _RecoverCardState extends State<_RecoverCard>
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.secondFieldValidator,
-      onSaved: _isRecoverWithTwoFields
-          ? (value) => auth.secondRecoveryField = value!
-          : (_) {},
+      onSaved: (value) => auth.secondRecoveryField = value!,
     );
   }
 
@@ -143,7 +143,7 @@ class _RecoverCardState extends State<_RecoverCard>
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.userValidator,
-      onSaved: messages.recoverPwUserHint == null
+      onSaved: (messages.recoverPwUserHint == null || _isRecoverWithTwoFields)
           ? (value) => auth.userName = value!
           : (_) {},
     );
