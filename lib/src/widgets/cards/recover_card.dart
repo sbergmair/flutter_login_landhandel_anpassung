@@ -124,7 +124,7 @@ class _RecoverCardState extends State<_RecoverCard>
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.secondFieldValidator,
-      onSaved: (value) => auth.secondRecoveryField = value!,
+      onSaved: (value) => auth.userName = value!,
     );
   }
 
@@ -143,9 +143,7 @@ class _RecoverCardState extends State<_RecoverCard>
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.userValidator,
-      onSaved: (messages.recoverPwUserHint == null || _isRecoverWithTwoFields)
-          ? (value) => auth.userName = value!
-          : (_) {},
+      onSaved: (name) => _onRecoverNameSaved(name!, messages, auth),
     );
   }
 
@@ -208,6 +206,9 @@ class _RecoverCardState extends State<_RecoverCard>
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyText2,
                 ),
+                if (_isRecoverWithTwoFields) const SizedBox(height: 20),
+                if (_isRecoverWithTwoFields)
+                  _buildRecoverSecondField(textFieldWidth, messages, auth),
                 const SizedBox(height: 20),
                 _buildRecoverNameField(textFieldWidth, messages, auth),
                 const SizedBox(height: 20),
@@ -220,8 +221,6 @@ class _RecoverCardState extends State<_RecoverCard>
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyText2,
                   ),
-                if (_isRecoverWithTwoFields)
-                  _buildRecoverSecondField(textFieldWidth, messages, auth),
                 const SizedBox(height: 26),
                 _buildRecoverButton(theme, messages),
                 _buildBackButton(theme, messages, widget.loginTheme),
@@ -231,5 +230,13 @@ class _RecoverCardState extends State<_RecoverCard>
         ),
       ),
     );
+  }
+
+  void _onRecoverNameSaved(String value, LoginMessages messages, Auth auth) {
+    if (_isRecoverWithTwoFields) {
+      auth.secondRecoveryField = value;
+    } else if (messages.recoverPwUserHint == null) {
+      auth.userName = value;
+    }
   }
 }
