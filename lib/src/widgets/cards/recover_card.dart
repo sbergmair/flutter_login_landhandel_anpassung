@@ -52,11 +52,14 @@ class _RecoverCardState extends State<_RecoverCard>
 
     // If recoverPwUserHint is set, then the logic needs to be split
     _nameController = TextEditingController(
-        text: messages.recoverPwUserHint == null ? auth.email : '');
+      text: messages.recoverPwUserHint == null ? auth.email : '',
+    );
 
     if (messages.secondRecoveryFieldHint != null) {
       _isRecoverWithTwoFields = true;
-      _secondFieldController = TextEditingController();
+      _secondFieldController = TextEditingController(
+        text: auth.email,
+      );
     }
 
     _submitController = AnimationController(

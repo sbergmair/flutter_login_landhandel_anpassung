@@ -61,7 +61,8 @@ class Auth with ChangeNotifier {
       : _email = email,
         _password = password,
         _confirmPassword = confirmPassword,
-        _mode = initialAuthMode;
+        _mode = initialAuthMode,
+        assert(onRecoverWithTwoFields == null || onRecoverPassword == null);
 
   final LoginCallback? onLogin;
   final RecoverTwoFieldsCallback? onRecoverWithTwoFields;
