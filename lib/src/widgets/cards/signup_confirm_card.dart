@@ -59,7 +59,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     final error = await auth.onConfirmSignup!(
         _code,
         LoginData(
-          name: auth.email,
+          name: auth.userName,
           password: auth.password,
         ));
 
@@ -94,7 +94,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     await _fieldSubmitController.forward();
     setState(() => _isSubmitting = true);
     final error = await auth.onResendCode!(SignupData.fromSignupForm(
-        name: auth.email,
+        name: auth.userName,
         password: auth.password,
         termsOfService: auth.getTermsOfServiceResults()));
 

@@ -130,7 +130,7 @@ class _AdditionalSignUpCardState extends State<_AdditionalSignUpCard>
         break;
       case AuthType.userPassword:
         error = await auth.onSignup!(SignupData.fromSignupForm(
-            name: auth.email,
+            name: auth.userName,
             password: auth.password,
             additionalSignupData: auth.additionalSignupData,
             termsOfService: auth.getTermsOfServiceResults()));

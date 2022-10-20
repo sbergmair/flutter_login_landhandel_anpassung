@@ -58,7 +58,7 @@ class Auth with ChangeNotifier {
       String confirmPassword = '',
       AuthMode initialAuthMode = AuthMode.login,
       this.termsOfService = const []})
-      : _email = email,
+      : _userName = email,
         _password = password,
         _confirmPassword = confirmPassword,
         _mode = initialAuthMode,
@@ -107,10 +107,10 @@ class Auth with ChangeNotifier {
     return mode;
   }
 
-  String _email = '';
-  String get email => _email;
-  set email(String email) {
-    _email = email;
+  String _userName = '';
+  String get userName => _userName;
+  set userName(String user) {
+    _userName = user;
     notifyListeners();
   }
 

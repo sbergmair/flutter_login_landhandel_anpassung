@@ -60,7 +60,7 @@ class _ConfirmRecoverCardState extends State<_ConfirmRecoverCard>
     final error = await auth.onConfirmRecover!(
       _code,
       LoginData(
-        name: auth.email,
+        name: auth.userName,
         password: auth.password,
       ),
     );

@@ -52,13 +52,13 @@ class _RecoverCardState extends State<_RecoverCard>
 
     // If recoverPwUserHint is set, then the logic needs to be split
     _nameController = TextEditingController(
-      text: messages.recoverPwUserHint == null ? auth.email : '',
+      text: messages.recoverPwUserHint == null ? auth.userName : '',
     );
 
     if (messages.secondRecoveryFieldHint != null) {
       _isRecoverWithTwoFields = true;
       _secondFieldController = TextEditingController(
-        text: auth.email,
+        text: auth.userName,
       );
     }
 
@@ -87,9 +87,9 @@ class _RecoverCardState extends State<_RecoverCard>
     final String? error;
     if (_isRecoverWithTwoFields) {
       error = await auth.onRecoverWithTwoFields!(RecoverDataTwoFields(
-          mail: auth.email, customerNumber: auth.secondRecoveryField));
+          mail: auth.userName, customerNumber: auth.secondRecoveryField,));
     } else {
-      error = await auth.onRecoverPassword!(auth.email);
+      error = await auth.onRecoverPassword!(auth.userName);
     }
     if (error != null) {
       showErrorToast(context, messages.flushbarTitleError, error);
@@ -122,7 +122,7 @@ class _RecoverCardState extends State<_RecoverCard>
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.secondFieldValidator,
-      onSaved: messages.secondRecoveryFieldHint != null
+      onSaved: _isRecoverWithTwoFields
           ? (value) => auth.secondRecoveryField = value!
           : (_) {},
     );
@@ -141,10 +141,10 @@ class _RecoverCardState extends State<_RecoverCard>
       keyboardType: TextFieldUtils.getKeyboardType(widget.userType),
       autofillHints: [TextFieldUtils.getAutofillHints(widget.userType)],
       textInputAction: TextInputAction.done,
-      onFieldSubmitted: _isRecoverWithTwoFields ? null : (value) => _submit(),
+      onFieldSubmitted: (value) => _submit(),
       validator: widget.userValidator,
       onSaved: messages.recoverPwUserHint == null
-          ? (value) => auth.email = value!
+          ? (value) => auth.userName = value!
           : (_) {},
     );
   }
