@@ -10,8 +10,10 @@ class TextFieldUtils {
       case LoginUserType.phone:
         return AutofillHints.telephoneNumber;
       case LoginUserType.email:
-      default:
-        return AutofillHints.email;
+      case LoginUserType.numbers:
+        return AutofillHints.username;
+    default:
+      return AutofillHints.email;
     }
   }
 
@@ -22,8 +24,10 @@ class TextFieldUtils {
       case LoginUserType.phone:
         return TextInputType.number;
       case LoginUserType.email:
-      default:
-        return TextInputType.emailAddress;
+      case LoginUserType.numbers:
+        return TextInputType.number;
+    default:
+      return TextInputType.emailAddress;
     }
   }
 
@@ -34,6 +38,8 @@ class TextFieldUtils {
       case LoginUserType.phone:
         return const Icon(FontAwesomeIcons.squarePhoneFlip);
       case LoginUserType.email:
+      case LoginUserType.numbers:
+        return const Icon(FontAwesomeIcons.circleUser);
       default:
         return const Icon(FontAwesomeIcons.squareEnvelope);
     }
@@ -46,6 +52,8 @@ class TextFieldUtils {
       case LoginUserType.phone:
         return "Phone";
       case LoginUserType.email:
+      case LoginUserType.numbers:
+        return "Number";
       default:
         return "Email";
     }
