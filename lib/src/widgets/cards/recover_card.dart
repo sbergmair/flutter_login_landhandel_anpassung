@@ -87,8 +87,8 @@ class _RecoverCardState extends State<_RecoverCard>
     final String? error;
     if (_isRecoverWithTwoFields) {
       error = await auth.onRecoverWithTwoFields!(RecoverDataTwoFields(
-        mail: auth.userName,
-        customerNumber: auth.secondRecoveryField,
+        mail: auth.secondRecoveryField,
+        customerNumber: auth.userName,
       ));
     } else {
       error = await auth.onRecoverPassword!(auth.userName);
