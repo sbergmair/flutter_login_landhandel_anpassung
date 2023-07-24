@@ -206,11 +206,11 @@ class _RecoverCardState extends State<_RecoverCard>
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyText2,
                 ),
+                const SizedBox(height: 20),
+                _buildRecoverNameField(textFieldWidth, messages, auth),
                 if (_isRecoverWithTwoFields) const SizedBox(height: 20),
                 if (_isRecoverWithTwoFields)
                   _buildRecoverSecondField(textFieldWidth, messages, auth),
-                const SizedBox(height: 20),
-                _buildRecoverNameField(textFieldWidth, messages, auth),
                 const SizedBox(height: 20),
                 if (!_isRecoverWithTwoFields)
                   Text(
