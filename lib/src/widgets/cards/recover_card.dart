@@ -57,9 +57,7 @@ class _RecoverCardState extends State<_RecoverCard>
 
     if (messages.secondRecoveryFieldHint != null) {
       _isRecoverWithTwoFields = true;
-      _secondFieldController = TextEditingController(
-        text: auth.userName,
-      );
+      _secondFieldController = TextEditingController(text: auth.userName);
     }
 
     _submitController = AnimationController(
@@ -86,10 +84,12 @@ class _RecoverCardState extends State<_RecoverCard>
     setState(() => _isSubmitting = true);
     final String? error;
     if (_isRecoverWithTwoFields) {
-      error = await auth.onRecoverWithTwoFields!(RecoverDataTwoFields(
-        mail: auth.secondRecoveryField,
-        customerNumber: auth.userName,
-      ));
+      error = await auth.onRecoverWithTwoFields!(
+        RecoverDataTwoFields(
+          mail: auth.secondRecoveryField,
+          customerNumber: auth.userName,
+        ),
+      );
     } else {
       error = await auth.onRecoverPassword!(auth.userName);
     }
@@ -99,8 +99,11 @@ class _RecoverCardState extends State<_RecoverCard>
       await _submitController.reverse();
       return false;
     } else {
-      showSuccessToast(context, messages.flushbarTitleSuccess,
-          messages.recoverPasswordSuccess);
+      showSuccessToast(
+        context,
+        messages.flushbarTitleSuccess,
+        messages.recoverPasswordSuccess,
+      );
       setState(() => _isSubmitting = false);
       widget.onSubmitCompleted();
       return true;
@@ -108,19 +111,24 @@ class _RecoverCardState extends State<_RecoverCard>
   }
 
   Widget _buildRecoverSecondField(
-      double width, LoginMessages messages, Auth auth) {
+    double width,
+    LoginMessages messages,
+    Auth auth,
+  ) {
     return AnimatedTextFormField(
       controller: _secondFieldController,
       loadingController: widget.loadingController,
       width: width,
       labelText: messages.secondRecoveryFieldHint,
       prefixIcon: const Icon(FontAwesomeIcons.solidCircleUser),
-      keyboardType: widget.secondFieldType != null
-          ? TextFieldUtils.getKeyboardType(widget.secondFieldType!)
-          : null,
-      autofillHints: widget.secondFieldType != null
-          ? [TextFieldUtils.getAutofillHints(widget.secondFieldType!)]
-          : null,
+      keyboardType:
+          widget.secondFieldType != null
+              ? TextFieldUtils.getKeyboardType(widget.secondFieldType!)
+              : null,
+      autofillHints:
+          widget.secondFieldType != null
+              ? [TextFieldUtils.getAutofillHints(widget.secondFieldType!)]
+              : null,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) => _submit(),
       validator: widget.secondFieldValidator,
@@ -129,11 +137,15 @@ class _RecoverCardState extends State<_RecoverCard>
   }
 
   Widget _buildRecoverNameField(
-      double width, LoginMessages messages, Auth auth) {
+    double width,
+    LoginMessages messages,
+    Auth auth,
+  ) {
     return AnimatedTextFormField(
-      controller: messages.recoverPwUserHint == null
-          ? _nameController
-          : TextEditingController(),
+      controller:
+          messages.recoverPwUserHint == null
+              ? _nameController
+              : TextEditingController(),
       loadingController: widget.loadingController,
       width: width,
       labelText: messages.recoverPwUserHint ?? messages.userHint,
@@ -156,18 +168,22 @@ class _RecoverCardState extends State<_RecoverCard>
   }
 
   Widget _buildBackButton(
-      ThemeData theme, LoginMessages messages, LoginTheme? loginTheme) {
+    ThemeData theme,
+    LoginMessages messages,
+    LoginTheme? loginTheme,
+  ) {
     final calculatedTextColor =
         (theme.cardTheme.color!.computeLuminance() < 0.5)
             ? Colors.white
             : theme.primaryColor;
     return MaterialButton(
-      onPressed: !_isSubmitting
-          ? () {
-              _formRecoverKey.currentState!.save();
-              widget.onBack();
-            }
-          : null,
+      onPressed:
+          !_isSubmitting
+              ? () {
+                _formRecoverKey.currentState!.save();
+                widget.onBack();
+              }
+              : null,
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       textColor: loginTheme?.switchAuthTextColor ?? calculatedTextColor,
@@ -204,7 +220,7 @@ class _RecoverCardState extends State<_RecoverCard>
                   messages.recoverPasswordIntro,
                   key: kRecoverPasswordIntroKey,
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText2,
+                  style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 20),
                 _buildRecoverNameField(textFieldWidth, messages, auth),
@@ -219,7 +235,7 @@ class _RecoverCardState extends State<_RecoverCard>
                         : messages.recoverPasswordDescription,
                     key: kRecoverPasswordDescriptionKey,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyText2,
+                    style: theme.textTheme.bodyMedium,
                   ),
                 const SizedBox(height: 26),
                 _buildRecoverButton(theme, messages),

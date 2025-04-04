@@ -59,10 +59,7 @@ class _ConfirmRecoverCardState extends State<_ConfirmRecoverCard>
     setState(() => _isSubmitting = true);
     final error = await auth.onConfirmRecover!(
       _code,
-      LoginData(
-        name: auth.userName,
-        password: auth.password,
-      ),
+      LoginData(name: auth.userName, password: auth.password),
     );
 
     if (error != null) {
@@ -71,8 +68,11 @@ class _ConfirmRecoverCardState extends State<_ConfirmRecoverCard>
       await _submitController.reverse();
       return false;
     } else {
-      showSuccessToast(context, messages.flushbarTitleSuccess,
-          messages.confirmRecoverSuccess);
+      showSuccessToast(
+        context,
+        messages.flushbarTitleSuccess,
+        messages.confirmRecoverSuccess,
+      );
       setState(() => _isSubmitting = false);
       widget.onSubmitCompleted();
       return true;
@@ -177,7 +177,7 @@ class _ConfirmRecoverCardState extends State<_ConfirmRecoverCard>
                 Text(
                   messages.confirmRecoverIntro,
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText2,
+                  style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 20),
                 _buildVerificationCodeField(textFieldWidth, messages),

@@ -57,11 +57,9 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     await _fieldSubmitController.forward();
     setState(() => _isSubmitting = true);
     final error = await auth.onConfirmSignup!(
-        _code,
-        LoginData(
-          name: auth.userName,
-          password: auth.password,
-        ));
+      _code,
+      LoginData(name: auth.userName, password: auth.password),
+    );
 
     if (error != null) {
       showErrorToast(context, messages.flushbarTitleError, error);
@@ -71,7 +69,10 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     }
 
     showSuccessToast(
-        context, messages.flushbarTitleSuccess, messages.confirmSignupSuccess);
+      context,
+      messages.flushbarTitleSuccess,
+      messages.confirmSignupSuccess,
+    );
     setState(() => _isSubmitting = false);
     await _fieldSubmitController.reverse();
 
@@ -93,10 +94,13 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
 
     await _fieldSubmitController.forward();
     setState(() => _isSubmitting = true);
-    final error = await auth.onResendCode!(SignupData.fromSignupForm(
+    final error = await auth.onResendCode!(
+      SignupData.fromSignupForm(
         name: auth.userName,
         password: auth.password,
-        termsOfService: auth.getTermsOfServiceResults()));
+        termsOfService: auth.getTermsOfServiceResults(),
+      ),
+    );
 
     if (error != null) {
       showErrorToast(context, messages.flushbarTitleError, error);
@@ -106,7 +110,10 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
     }
 
     showSuccessToast(
-        context, messages.flushbarTitleSuccess, messages.resendCodeSuccess);
+      context,
+      messages.flushbarTitleSuccess,
+      messages.resendCodeSuccess,
+    );
     setState(() => _isSubmitting = false);
     await _fieldSubmitController.reverse();
     return true;
@@ -137,7 +144,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
         onPressed: !_isSubmitting ? _resendCode : null,
         child: Text(
           messages.resendCodeButton,
-          style: theme.textTheme.bodyText2,
+          style: theme.textTheme.bodyMedium,
           textAlign: TextAlign.left,
         ),
       ),
@@ -197,7 +204,7 @@ class _ConfirmSignupCardState extends State<_ConfirmSignupCard>
                   child: Text(
                     messages.confirmSignupIntro,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyText2,
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ),
                 const SizedBox(height: 20),

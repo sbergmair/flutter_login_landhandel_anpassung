@@ -17,8 +17,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
-import '../../../flutter_login.dart';
-import '../../models/recover_data_two_fields.dart';
 import '../animated_button.dart';
 import '../animated_icon.dart';
 import '../animated_text.dart';
@@ -145,40 +143,62 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1100),
     );
 
-    _cardSizeAnimation = Tween<double>(begin: 1.0, end: cardSizeScaleEnd)
-        .animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: const Interval(0, .27272727 /* ~300ms */,
-          curve: Curves.easeInOutCirc),
-    ));
+    _cardSizeAnimation = Tween<double>(
+      begin: 1.0,
+      end: cardSizeScaleEnd,
+    ).animate(
+      CurvedAnimation(
+        parent: _routeTransitionController,
+        curve: const Interval(
+          0,
+          .27272727 /* ~300ms */,
+          curve: Curves.easeInOutCirc,
+        ),
+      ),
+    );
 
     // replace 0 with minPositive to pass the test
     // https://github.com/flutter/flutter/issues/42527#issuecomment-575131275
-    _cardOverlayHeightFactorAnimation =
-        Tween<double>(begin: double.minPositive, end: 1.0)
-            .animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: const Interval(.27272727, .5 /* ~250ms */, curve: Curves.linear),
-    ));
+    _cardOverlayHeightFactorAnimation = Tween<double>(
+      begin: double.minPositive,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _routeTransitionController,
+        curve: const Interval(.27272727, .5 /* ~250ms */, curve: Curves.linear),
+      ),
+    );
 
-    _cardOverlaySizeAndOpacityAnimation =
-        Tween<double>(begin: 1.0, end: 0).animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: const Interval(.5, .72727272 /* ~250ms */, curve: Curves.linear),
-    ));
+    _cardOverlaySizeAndOpacityAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: _routeTransitionController,
+        curve: const Interval(.5, .72727272 /* ~250ms */, curve: Curves.linear),
+      ),
+    );
 
-    _cardSize2AnimationX =
-        Tween<double>(begin: 1, end: 1).animate(_routeTransitionController);
+    _cardSize2AnimationX = Tween<double>(
+      begin: 1,
+      end: 1,
+    ).animate(_routeTransitionController);
 
-    _cardSize2AnimationY =
-        Tween<double>(begin: 1, end: 1).animate(_routeTransitionController);
+    _cardSize2AnimationY = Tween<double>(
+      begin: 1,
+      end: 1,
+    ).animate(_routeTransitionController);
 
-    _cardRotationAnimation =
-        Tween<double>(begin: 0, end: pi / 2).animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: const Interval(.72727272, 1 /* ~300ms */,
-          curve: Curves.easeInOutCubic),
-    ));
+    _cardRotationAnimation = Tween<double>(begin: 0, end: pi / 2).animate(
+      CurvedAnimation(
+        parent: _routeTransitionController,
+        curve: const Interval(
+          .72727272,
+          1 /* ~300ms */,
+          curve: Curves.easeInOutCubic,
+        ),
+      ),
+    );
   }
 
   @override
@@ -212,9 +232,9 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         }
       });
     } else if (widget.loadingController.isCompleted) {
-      return _formLoadingController
-          .reverse()
-          .then((_) => widget.loadingController.reverse());
+      return _formLoadingController.reverse().then(
+        (_) => widget.loadingController.reverse(),
+      );
     }
     return null;
   }
@@ -225,30 +245,36 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
     final widthRatio = deviceSize.width / cardSize.height + 2;
     final heightRatio = deviceSize.height / cardSize.width + .25;
 
-    _cardSize2AnimationX =
-        Tween<double>(begin: 1.0, end: heightRatio / cardSizeScaleEnd)
-            .animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: const Interval(.72727272, 1, curve: Curves.easeInOutCubic),
-    ));
-    _cardSize2AnimationY =
-        Tween<double>(begin: 1.0, end: widthRatio / cardSizeScaleEnd)
-            .animate(CurvedAnimation(
-      parent: _routeTransitionController,
-      curve: const Interval(.72727272, 1, curve: Curves.easeInOutCubic),
-    ));
+    _cardSize2AnimationX = Tween<double>(
+      begin: 1.0,
+      end: heightRatio / cardSizeScaleEnd,
+    ).animate(
+      CurvedAnimation(
+        parent: _routeTransitionController,
+        curve: const Interval(.72727272, 1, curve: Curves.easeInOutCubic),
+      ),
+    );
+    _cardSize2AnimationY = Tween<double>(
+      begin: 1.0,
+      end: widthRatio / cardSizeScaleEnd,
+    ).animate(
+      CurvedAnimation(
+        parent: _routeTransitionController,
+        curve: const Interval(.72727272, 1, curve: Curves.easeInOutCubic),
+      ),
+    );
 
     widget.onSubmit?.call();
 
-    return _formLoadingController
-        .reverse()
-        .then((_) => _routeTransitionController.forward());
+    return _formLoadingController.reverse().then(
+      (_) => _routeTransitionController.forward(),
+    );
   }
 
   void _reverseChangeRouteAnimation() {
-    _routeTransitionController
-        .reverse()
-        .then((_) => _formLoadingController.forward());
+    _routeTransitionController.reverse().then(
+      (_) => _formLoadingController.forward(),
+    );
   }
 
   void runChangeRouteAnimation() {
@@ -275,11 +301,12 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
     // loading at startup
     card = AnimatedBuilder(
       animation: _flipAnimation,
-      builder: (context, child) => Transform(
-        transform: Matrix.perspective()..rotateX(_flipAnimation.value),
-        alignment: Alignment.center,
-        child: child,
-      ),
+      builder:
+          (context, child) => Transform(
+            transform: Matrix.perspective()..rotateX(_flipAnimation.value),
+            alignment: Alignment.center,
+            child: child,
+          ),
       child: child,
     );
 
@@ -288,14 +315,15 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       padding: theme.cardTheme.margin!,
       child: AnimatedBuilder(
         animation: _cardOverlayHeightFactorAnimation,
-        builder: (context, child) => ClipPath.shape(
-          shape: theme.cardTheme.shape!,
-          child: FractionallySizedBox(
-            heightFactor: _cardOverlayHeightFactorAnimation.value,
-            alignment: Alignment.topCenter,
-            child: child,
-          ),
-        ),
+        builder:
+            (context, child) => ClipPath.shape(
+              shape: theme.cardTheme.shape!,
+              child: FractionallySizedBox(
+                heightFactor: _cardOverlayHeightFactorAnimation.value,
+                alignment: Alignment.topCenter,
+                child: child,
+              ),
+            ),
         child: DecoratedBox(
           decoration: BoxDecoration(color: theme.colorScheme.secondary),
         ),
@@ -310,12 +338,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       ),
     );
 
-    return Stack(
-      children: <Widget>[
-        card,
-        Positioned.fill(child: overlay),
-      ],
-    );
+    return Stack(children: <Widget>[card, Positioned.fill(child: overlay)]);
   }
 
   Widget _changeToCard(BuildContext context, int index) {
@@ -335,8 +358,8 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
             requireAdditionalSignUpFields:
                 widget.additionalSignUpFields != null,
             onSwitchRecoveryPassword: () => _changeCard(_recoveryIndex),
-            onSwitchSignUpAdditionalData: () =>
-                _changeCard(_additionalSignUpIndex),
+            onSwitchSignUpAdditionalData:
+                () => _changeCard(_additionalSignUpIndex),
             onSubmitCompleted: () {
               _forwardChangeRouteAnimation(_loginCardKey).then((_) {
                 widget.onSubmitCompleted!();
@@ -352,22 +375,23 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         );
       case _recoveryIndex:
         return _RecoverCard(
-            userValidator:
-                widget.passwordForgotUserValidator ?? widget.userValidator,
-            secondFieldValidator: widget.secondFieldValidator,
-            userType: widget.userType,
-            secondFieldType: widget.secondFieldType,
-            loginTheme: widget.loginTheme,
-            loadingController: formController,
-            navigateBack: widget.navigateBackAfterRecovery,
-            onBack: () => _changeCard(_loginPageIndex),
-            onSubmitCompleted: () {
-              if (auth.onConfirmRecover != null) {
-                _changeCard(_confirmRecover);
-              } else {
-                _changeCard(_loginPageIndex);
-              }
-            });
+          userValidator:
+              widget.passwordForgotUserValidator ?? widget.userValidator,
+          secondFieldValidator: widget.secondFieldValidator,
+          userType: widget.userType,
+          secondFieldType: widget.secondFieldType,
+          loginTheme: widget.loginTheme,
+          loadingController: formController,
+          navigateBack: widget.navigateBackAfterRecovery,
+          onBack: () => _changeCard(_loginPageIndex),
+          onSubmitCompleted: () {
+            if (auth.onConfirmRecover != null) {
+              _changeCard(_confirmRecover);
+            } else {
+              _changeCard(_loginPageIndex);
+            }
+          },
+        );
 
       case _additionalSignUpIndex:
         if (widget.additionalSignUpFields == null) {
@@ -386,8 +410,9 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
               if (auth.onConfirmSignup != null) {
                 _changeCard(_confirmSignup);
               } else if (widget.loginAfterSignUp) {
-                _forwardChangeRouteAnimation(_additionalSignUpCardKey)
-                    .then((_) {
+                _forwardChangeRouteAnimation(_additionalSignUpCardKey).then((
+                  _,
+                ) {
                   widget.onSubmitCompleted!();
                 });
               } else {
@@ -410,9 +435,11 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
           theme: Theme.of(context),
           child: _ConfirmSignupCard(
             key: _confirmSignUpCardKey,
-            onBack: () => auth.additionalSignupData == null
-                ? _changeCard(_loginPageIndex)
-                : _changeCard(_additionalSignUpIndex),
+            onBack:
+                () =>
+                    auth.additionalSignupData == null
+                        ? _changeCard(_loginPageIndex)
+                        : _changeCard(_additionalSignUpIndex),
             loadingController: formController,
             onSubmitCompleted: () {
               if (widget.loginAfterSignUp) {
@@ -446,16 +473,19 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
         /// Need to keep track of page index because soft keyboard will
         /// make page view rebuilt
         index: _pageIndex,
-        transformer: widget.disableCustomPageTransformer
-            ? null
-            : CustomPageTransformer(),
+        transformer:
+            widget.disableCustomPageTransformer
+                ? null
+                : CustomPageTransformer(),
         itemBuilder: (BuildContext context, int index) {
           if (widget.scrollable) {
             return Align(
               alignment: Alignment.topCenter,
               child: Scrollbar(
-                  child: SingleChildScrollView(
-                      child: _changeToCard(context, index))),
+                child: SingleChildScrollView(
+                  child: _changeToCard(context, index),
+                ),
+              ),
             );
           } else {
             return Align(
@@ -472,10 +502,11 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       builder: (context, snapshot) {
         return Transform(
           alignment: Alignment.center,
-          transform: Matrix4.identity()
-            ..rotateZ(_cardRotationAnimation.value)
-            ..scale(_cardSizeAnimation.value, _cardSizeAnimation.value)
-            ..scale(_cardSize2AnimationX.value, _cardSize2AnimationY.value),
+          transform:
+              Matrix4.identity()
+                ..rotateZ(_cardRotationAnimation.value)
+                ..scale(_cardSizeAnimation.value, _cardSizeAnimation.value)
+                ..scale(_cardSize2AnimationX.value, _cardSize2AnimationY.value),
           child: current,
         );
       },

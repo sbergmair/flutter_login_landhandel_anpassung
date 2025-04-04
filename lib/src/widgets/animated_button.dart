@@ -56,23 +56,25 @@ class _AnimatedButtonState extends State<AnimatedButton>
     // _colorAnimation
     // _width, _sizeAnimation
 
-    _buttonOpacityAnimation =
-        Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
-      parent: widget.controller!,
-      curve: const Threshold(.65),
-    ));
+    _buttonOpacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: widget.controller!, curve: const Threshold(.65)),
+    );
 
-    _ringThicknessAnimation =
-        Tween<double>(begin: _loadingCircleRadius, end: _loadingCircleThickness)
-            .animate(CurvedAnimation(
-      parent: widget.controller!,
-      curve: const Interval(.65, .85),
-    ));
-    _ringOpacityAnimation =
-        Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
-      parent: widget.controller!,
-      curve: const Interval(.85, 1.0),
-    ));
+    _ringThicknessAnimation = Tween<double>(
+      begin: _loadingCircleRadius,
+      end: _loadingCircleThickness,
+    ).animate(
+      CurvedAnimation(
+        parent: widget.controller!,
+        curve: const Interval(.65, .85),
+      ),
+    );
+    _ringOpacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: widget.controller!,
+        curve: const Interval(.85, 1.0),
+      ),
+    );
 
     widget.controller!.addStatusListener(handleStatusChanged);
   }
@@ -91,10 +93,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
     _color = widget.color ?? buttonTheme.backgroundColor;
     _loadingColor = widget.loadingColor ?? theme.colorScheme.secondary;
 
-    _colorAnimation = ColorTween(
-      begin: _color,
-      end: _loadingColor,
-    ).animate(
+    _colorAnimation = ColorTween(begin: _color, end: _loadingColor).animate(
       CurvedAnimation(
         parent: widget.controller!,
         curve: const Interval(0.0, .65, curve: Curves.fastOutSlowIn),
@@ -134,14 +133,14 @@ class _AnimatedButtonState extends State<AnimatedButton>
   /// sets width and size animation
   void _updateWidth() {
     final theme = Theme.of(context);
-    final fontSize = theme.textTheme.button!.fontSize!;
+    final fontSize = theme.textTheme.labelLarge!.fontSize!;
     final renderParagraph = RenderParagraph(
       TextSpan(
         text: widget.text,
         style: TextStyle(
           fontSize: fontSize,
-          fontWeight: theme.textTheme.button!.fontWeight,
-          letterSpacing: theme.textTheme.button!.letterSpacing,
+          fontWeight: theme.textTheme.labelLarge!.fontWeight,
+          letterSpacing: theme.textTheme.labelLarge!.letterSpacing,
         ),
       ),
       textDirection: TextDirection.ltr,
@@ -155,26 +154,25 @@ class _AnimatedButtonState extends State<AnimatedButton>
         renderParagraph.getMinIntrinsicWidth(fontSize).ceilToDouble() + 45.0;
 
     // button width is min 120.0 and max 240.0
-    _width = textWidth > 120.0 && textWidth < 240.0
-        ? textWidth
-        : textWidth >= 240.0
+    _width =
+        textWidth > 120.0 && textWidth < 240.0
+            ? textWidth
+            : textWidth >= 240.0
             ? 240.0
             : 120.0;
 
-    _sizeAnimation = Tween<double>(begin: 1.0, end: _height / _width)
-        .animate(CurvedAnimation(
-      parent: widget.controller!,
-      curve: const Interval(0.0, .65, curve: Curves.fastOutSlowIn),
-    ));
+    _sizeAnimation = Tween<double>(begin: 1.0, end: _height / _width).animate(
+      CurvedAnimation(
+        parent: widget.controller!,
+        curve: const Interval(0.0, .65, curve: Curves.fastOutSlowIn),
+      ),
+    );
   }
 
   Widget _buildButtonText(ThemeData theme) {
     return FadeTransition(
       opacity: _textOpacityAnimation,
-      child: AnimatedText(
-        text: widget.text,
-        style: theme.textTheme.button,
-      ),
+      child: AnimatedText(text: widget.text, style: theme.textTheme.labelLarge),
     );
   }
 
@@ -186,17 +184,19 @@ class _AnimatedButtonState extends State<AnimatedButton>
         duration: const Duration(milliseconds: 300),
         child: AnimatedBuilder(
           animation: _colorAnimation,
-          builder: (context, child) => Material(
-            shape: buttonTheme.shape,
-            color: _colorAnimation.value,
-            shadowColor: _color,
-            elevation: !_isLoading
-                ? (_hover
-                    ? buttonTheme.highlightElevation!
-                    : buttonTheme.elevation!)
-                : 0,
-            child: child,
-          ),
+          builder:
+              (context, child) => Material(
+                shape: buttonTheme.shape,
+                color: _colorAnimation.value,
+                shadowColor: _color,
+                elevation:
+                    !_isLoading
+                        ? (_hover
+                            ? buttonTheme.highlightElevation!
+                            : buttonTheme.elevation!)
+                        : 0,
+                child: child,
+              ),
           child: InkWell(
             onTap: !_isLoading ? widget.onPressed as void Function()? : null,
             splashColor: buttonTheme.splashColor,
@@ -229,11 +229,12 @@ class _AnimatedButtonState extends State<AnimatedButton>
           opacity: _ringOpacityAnimation,
           child: AnimatedBuilder(
             animation: _ringThicknessAnimation,
-            builder: (context, child) => Ring(
-              color: widget.loadingColor,
-              size: _height,
-              thickness: _ringThicknessAnimation.value,
-            ),
+            builder:
+                (context, child) => Ring(
+                  color: widget.loadingColor,
+                  size: _height,
+                  thickness: _ringThicknessAnimation.value,
+                ),
           ),
         ),
         if (_isLoading)

@@ -71,14 +71,14 @@ class LoginProvider {
   /// Default: true
   final bool animated;
 
-  const LoginProvider(
-      {this.button,
-      this.icon,
-      required this.callback,
-      this.label = '',
-      this.providerNeedsSignUpCallback,
-      this.animated = true})
-      : assert(button != null || icon != null);
+  const LoginProvider({
+    this.button,
+    this.icon,
+    required this.callback,
+    this.label = '',
+    this.providerNeedsSignUpCallback,
+    this.animated = true,
+  }) : assert(button != null || icon != null);
 }
 
 class _AnimationTimeDilationDropdown extends StatelessWidget {
@@ -163,7 +163,7 @@ class __HeaderState extends State<_Header> {
     final renderParagraph = RenderParagraph(
       TextSpan(
         text: widget.title,
-        style: theme.textTheme.headline3!.copyWith(
+        style: theme.textTheme.displaySmall!.copyWith(
           fontSize: widget.loginTheme.beforeHeroFontSize,
         ),
       ),
@@ -198,27 +198,24 @@ class __HeaderState extends State<_Header> {
     final theme = Theme.of(context);
     const gap = 5.0;
     final logoHeight = min(
-        (widget.height - MediaQuery.of(context).padding.top) -
-            _titleHeight -
-            gap,
-        kMaxLogoHeight);
+      (widget.height - MediaQuery.of(context).padding.top) - _titleHeight - gap,
+      kMaxLogoHeight,
+    );
     final displayLogo = widget.logo != null && logoHeight >= kMinLogoHeight;
     final cardWidth = min(MediaQuery.of(context).size.width * 0.75, 360.0);
 
-    var logo = displayLogo
-        ? Image(
-            image: widget.logo!,
-            filterQuality: FilterQuality.high,
-            height: logoHeight,
-            width: widget.logoWidth * cardWidth,
-          )
-        : const SizedBox.shrink();
+    var logo =
+        displayLogo
+            ? Image(
+              image: widget.logo!,
+              filterQuality: FilterQuality.high,
+              height: logoHeight,
+              width: widget.logoWidth * cardWidth,
+            )
+            : const SizedBox.shrink();
 
     if (widget.logoTag != null) {
-      logo = Hero(
-        tag: widget.logoTag!,
-        child: logo,
-      );
+      logo = Hero(tag: widget.logoTag!, child: logo);
     }
 
     Widget? title;
@@ -229,14 +226,14 @@ class __HeaderState extends State<_Header> {
         tag: widget.titleTag,
         largeFontSize: widget.loginTheme.beforeHeroFontSize,
         smallFontSize: widget.loginTheme.afterHeroFontSize,
-        style: theme.textTheme.headline3,
+        style: theme.textTheme.displaySmall,
         viewState: ViewState.enlarged,
       );
     } else if (!DartHelper.isNullOrEmpty(widget.title)) {
       title = Text(
         widget.title!,
         key: kTitleKey,
-        style: theme.textTheme.headline3,
+        style: theme.textTheme.displaySmall,
       );
     } else {
       title = null;
@@ -270,49 +267,49 @@ class __HeaderState extends State<_Header> {
 }
 
 class FlutterLogin extends StatefulWidget {
-  FlutterLogin(
-      {Key? key,
-      this.onSignup,
-      required this.onLogin,
-      this.onRecoverPassword,
-      this.title,
+  FlutterLogin({
+    Key? key,
+    this.onSignup,
+    required this.onLogin,
+    this.onRecoverPassword,
+    this.title,
 
-      /// The [ImageProvider] or asset path [String] for the logo image to be displayed
-      dynamic logo,
-      this.messages,
-      this.theme,
-      this.userValidator,
-      this.secondFieldType,
-      this.secondFieldValidator,
-      this.passwordForgotUserValidator,
-      this.passwordValidator,
-      this.onSubmitAnimationCompleted,
-      this.logoTag,
-      this.userType = LoginUserType.email,
-      this.titleTag,
-      this.showDebugButtons = false,
-      this.loginProviders = const <LoginProvider>[],
-      this.hideForgotPasswordButton = false,
-      this.loginAfterSignUp = true,
-      this.footer,
-      this.hideProvidersTitle = false,
-      this.additionalSignupFields,
-      this.disableCustomPageTransformer = false,
-      this.navigateBackAfterRecovery = false,
-      this.termsOfService = const <TermOfService>[],
-      this.onConfirmRecover,
-      this.onRecoverTwoFields,
-      this.onConfirmSignup,
-      this.onResendCode,
-      this.savedEmail = '',
-      this.savedPassword = '',
-      this.initialAuthMode = AuthMode.login,
-      this.children,
-      this.scrollable = false})
-      : assert((logo is String?) || (logo is ImageProvider?)),
-        logo = logo is String ? AssetImage(logo) : logo,
-        assert(onRecoverPassword == null || onRecoverTwoFields == null),
-        super(key: key);
+    /// The [ImageProvider] or asset path [String] for the logo image to be displayed
+    dynamic logo,
+    this.messages,
+    this.theme,
+    this.userValidator,
+    this.secondFieldType,
+    this.secondFieldValidator,
+    this.passwordForgotUserValidator,
+    this.passwordValidator,
+    this.onSubmitAnimationCompleted,
+    this.logoTag,
+    this.userType = LoginUserType.email,
+    this.titleTag,
+    this.showDebugButtons = false,
+    this.loginProviders = const <LoginProvider>[],
+    this.hideForgotPasswordButton = false,
+    this.loginAfterSignUp = true,
+    this.footer,
+    this.hideProvidersTitle = false,
+    this.additionalSignupFields,
+    this.disableCustomPageTransformer = false,
+    this.navigateBackAfterRecovery = false,
+    this.termsOfService = const <TermOfService>[],
+    this.onConfirmRecover,
+    this.onRecoverTwoFields,
+    this.onConfirmSignup,
+    this.onResendCode,
+    this.savedEmail = '',
+    this.savedPassword = '',
+    this.initialAuthMode = AuthMode.login,
+    this.children,
+    this.scrollable = false,
+  }) : assert((logo is String?) || (logo is ImageProvider?)),
+       logo = logo is String ? AssetImage(logo) : logo,
+       assert(onRecoverPassword == null || onRecoverTwoFields == null),
+       super(key: key);
 
   /// Called when the user hit the submit button when in sign up mode
   ///
@@ -481,15 +478,15 @@ class _FlutterLoginState extends State<FlutterLogin>
       vsync: this,
       duration: loadingDuration,
     )..addStatusListener((status) {
-        if (status == AnimationStatus.forward) {
-          _logoController.forward();
-          _titleController.forward();
-        }
-        if (status == AnimationStatus.reverse) {
-          _logoController.reverse();
-          _titleController.reverse();
-        }
-      });
+      if (status == AnimationStatus.forward) {
+        _logoController.forward();
+        _titleController.forward();
+      }
+      if (status == AnimationStatus.reverse) {
+        _logoController.reverse();
+        _titleController.reverse();
+      }
+    });
     _logoController = AnimationController(
       vsync: this,
       duration: loadingDuration,
@@ -557,9 +554,10 @@ class _FlutterLoginState extends State<FlutterLogin>
                     initialValue: _selectTimeDilation,
                     onChanged: (int index) {
                       setState(() {
-                        _selectTimeDilation = _AnimationTimeDilationDropdown
-                            .animationSpeeds[index]
-                            .toDouble();
+                        _selectTimeDilation =
+                            _AnimationTimeDilationDropdown
+                                .animationSpeeds[index]
+                                .toDouble();
                       });
                     },
                   );
@@ -589,8 +587,8 @@ class _FlutterLoginState extends State<FlutterLogin>
           MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             color: Colors.red,
-            onPressed: () =>
-                authCardKey.currentState!.runChangeRouteAnimation(),
+            onPressed:
+                () => authCardKey.currentState!.runChangeRouteAnimation(),
             child: const Text('NAV', style: textStyle),
           ),
         ],
@@ -598,51 +596,59 @@ class _FlutterLoginState extends State<FlutterLogin>
     );
   }
 
-  ThemeData _mergeTheme(
-      {required ThemeData theme, required LoginTheme loginTheme}) {
+  ThemeData _mergeTheme({
+    required ThemeData theme,
+    required LoginTheme loginTheme,
+  }) {
     final blackOrWhite =
         theme.brightness == Brightness.light ? Colors.black54 : Colors.white;
-    final primaryOrWhite = theme.brightness == Brightness.light
-        ? theme.primaryColor
-        : Colors.white;
+    final primaryOrWhite =
+        theme.brightness == Brightness.light
+            ? theme.primaryColor
+            : Colors.white;
     final originalPrimaryColor = loginTheme.primaryColor ?? theme.primaryColor;
     final primaryDarkShades = getDarkShades(originalPrimaryColor);
-    final primaryColor = primaryDarkShades.length == 1
-        ? lighten(primaryDarkShades.first!)
-        : primaryDarkShades.first;
-    final primaryColorDark = primaryDarkShades.length >= 3
-        ? primaryDarkShades[2]
-        : primaryDarkShades.last;
+    final primaryColor =
+        primaryDarkShades.length == 1
+            ? lighten(primaryDarkShades.first!)
+            : primaryDarkShades.first;
+    final primaryColorDark =
+        primaryDarkShades.length >= 3
+            ? primaryDarkShades[2]
+            : primaryDarkShades.last;
     final accentColor = loginTheme.accentColor ?? theme.colorScheme.secondary;
-    final errorColor = loginTheme.errorColor ?? theme.errorColor;
+    final errorColor = loginTheme.errorColor ?? theme.colorScheme.error;
     // the background is a dark gradient, force to use white text if detect default black text color
-    final isDefaultBlackText = theme.textTheme.headline3!.color ==
-        Typography.blackMountainView.headline3!.color;
-    final titleStyle = theme.textTheme.headline3!
+    final isDefaultBlackText =
+        theme.textTheme.displaySmall!.color ==
+        Typography.blackMountainView.displaySmall!.color;
+    final titleStyle = theme.textTheme.displaySmall!
         .copyWith(
-          color: loginTheme.accentColor ??
+          color:
+              loginTheme.accentColor ??
               (isDefaultBlackText
                   ? Colors.white
-                  : theme.textTheme.headline3!.color),
+                  : theme.textTheme.displaySmall!.color),
           fontSize: loginTheme.beforeHeroFontSize,
           fontWeight: FontWeight.w300,
         )
         .merge(loginTheme.titleStyle);
-    final footerStyle = theme.textTheme.bodyText1!
+    final footerStyle = theme.textTheme.bodyLarge!
         .copyWith(
-          color: loginTheme.accentColor ??
+          color:
+              loginTheme.accentColor ??
               (isDefaultBlackText
                   ? Colors.white
-                  : theme.textTheme.headline3!.color),
+                  : theme.textTheme.displaySmall!.color),
         )
         .merge(loginTheme.footerTextStyle);
-    final textStyle = theme.textTheme.bodyText2!
+    final textStyle = theme.textTheme.bodyMedium!
         .copyWith(color: blackOrWhite)
         .merge(loginTheme.bodyStyle);
-    final textFieldStyle = theme.textTheme.subtitle1!
+    final textFieldStyle = theme.textTheme.titleMedium!
         .copyWith(color: blackOrWhite, fontSize: 14)
         .merge(loginTheme.textFieldStyle);
-    final buttonStyle = theme.textTheme.button!
+    final buttonStyle = theme.textTheme.labelLarge!
         .copyWith(color: Colors.white)
         .merge(loginTheme.buttonStyle);
     final cardTheme = loginTheme.cardTheme;
@@ -663,51 +669,59 @@ class _FlutterLoginState extends State<FlutterLogin>
     return theme.copyWith(
       primaryColor: primaryColor,
       primaryColorDark: primaryColorDark,
-      errorColor: errorColor,
       cardTheme: theme.cardTheme.copyWith(
         clipBehavior: cardTheme.clipBehavior,
+        surfaceTintColor: cardTheme.surfaceTintColor,
         color: cardTheme.color ?? theme.cardColor,
         elevation: cardTheme.elevation ?? 12.0,
         margin: cardTheme.margin ?? const EdgeInsets.all(4.0),
-        shape: cardTheme.shape ??
+        shape:
+            cardTheme.shape ??
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       ),
       inputDecorationTheme: theme.inputDecorationTheme.copyWith(
         filled: inputTheme.filled,
-        fillColor: inputTheme.fillColor ??
+        fillColor:
+            inputTheme.fillColor ??
             Color.alphaBlend(
-              primaryOrWhite.withOpacity(.07),
-              Colors.grey.withOpacity(.04),
+              primaryOrWhite.withValues(alpha: .07),
+              Colors.grey.withValues(alpha: .04),
             ),
-        contentPadding: inputTheme.contentPadding ??
+        contentPadding:
+            inputTheme.contentPadding ??
             const EdgeInsets.symmetric(vertical: 4.0),
         errorStyle: inputTheme.errorStyle ?? TextStyle(color: errorColor),
         labelStyle: inputTheme.labelStyle ?? labelStyle,
-        enabledBorder: inputTheme.enabledBorder ??
+        enabledBorder:
+            inputTheme.enabledBorder ??
             inputTheme.border ??
             OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.transparent),
               borderRadius: roundBorderRadius,
             ),
-        focusedBorder: inputTheme.focusedBorder ??
+        focusedBorder:
+            inputTheme.focusedBorder ??
             inputTheme.border ??
             OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor!, width: 1.5),
               borderRadius: roundBorderRadius,
             ),
-        errorBorder: inputTheme.errorBorder ??
+        errorBorder:
+            inputTheme.errorBorder ??
             inputTheme.border ??
             OutlineInputBorder(
               borderSide: BorderSide(color: errorColor),
               borderRadius: roundBorderRadius,
             ),
-        focusedErrorBorder: inputTheme.focusedErrorBorder ??
+        focusedErrorBorder:
+            inputTheme.focusedErrorBorder ??
             inputTheme.border ??
             OutlineInputBorder(
               borderSide: BorderSide(color: errorColor, width: 1.5),
               borderRadius: roundBorderRadius,
             ),
-        disabledBorder: inputTheme.disabledBorder ??
+        disabledBorder:
+            inputTheme.disabledBorder ??
             inputTheme.border ??
             OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.transparent),
@@ -725,14 +739,15 @@ class _FlutterLoginState extends State<FlutterLogin>
       highlightColor:
           loginTheme.buttonTheme.highlightColor ?? theme.highlightColor,
       textTheme: theme.textTheme.copyWith(
-        headline3: titleStyle,
-        bodyText2: textStyle,
-        subtitle1: textFieldStyle,
-        subtitle2: footerStyle,
-        button: buttonStyle,
+        displaySmall: titleStyle,
+        bodyMedium: textStyle,
+        titleMedium: textFieldStyle,
+        titleSmall: footerStyle,
+        labelLarge: buttonStyle,
       ),
-      colorScheme:
-          Theme.of(context).colorScheme.copyWith(secondary: accentColor),
+      colorScheme: Theme.of(
+        context,
+      ).colorScheme.copyWith(secondary: accentColor),
     );
   }
 
@@ -743,7 +758,8 @@ class _FlutterLoginState extends State<FlutterLogin>
     final deviceSize = MediaQuery.of(context).size;
     final headerMargin = loginTheme.headerMargin ?? 15;
     final cardInitialHeight = loginTheme.cardInitialHeight ?? 300;
-    final cardTopPosition = loginTheme.cardTopPosition ??
+    final cardTopPosition =
+        loginTheme.cardTopPosition ??
         max(deviceSize.height / 2 - cardInitialHeight / 2, 85);
     final headerHeight = cardTopPosition - headerMargin;
     final userValidator =
@@ -753,7 +769,8 @@ class _FlutterLoginState extends State<FlutterLogin>
     final passwordValidator =
         widget.passwordValidator ?? FlutterLogin.defaultPasswordValidator;
 
-    final passwordForgotUserValidator = widget.passwordForgotUserValidator ??
+    final passwordForgotUserValidator =
+        widget.passwordForgotUserValidator ??
         widget.userValidator ??
         FlutterLogin.defaultEmailValidator;
 
@@ -763,7 +780,7 @@ class _FlutterLoginState extends State<FlutterLogin>
         padding: EdgeInsets.only(bottom: loginTheme.footerBottomPadding),
         child: Text(
           widget.footer!,
-          style: theme.textTheme.subtitle2,
+          style: theme.textTheme.titleSmall,
           textAlign: TextAlign.center,
         ),
       );
@@ -771,28 +788,25 @@ class _FlutterLoginState extends State<FlutterLogin>
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: widget.messages ?? LoginMessages(),
-        ),
-        ChangeNotifierProvider.value(
-          value: widget.theme ?? LoginTheme(),
-        ),
+        ChangeNotifierProvider.value(value: widget.messages ?? LoginMessages()),
+        ChangeNotifierProvider.value(value: widget.theme ?? LoginTheme()),
         ChangeNotifierProvider(
-          create: (context) => Auth(
-            onLogin: widget.onLogin,
-            onSignup: widget.onSignup,
-            onRecoverPassword: widget.onRecoverPassword,
-            onRecoverWithTwoFields: widget.onRecoverTwoFields,
-            loginProviders: widget.loginProviders,
-            email: widget.savedEmail,
-            password: widget.savedPassword,
-            confirmPassword: widget.savedPassword,
-            onConfirmRecover: widget.onConfirmRecover,
-            onConfirmSignup: widget.onConfirmSignup,
-            onResendCode: widget.onResendCode,
-            termsOfService: widget.termsOfService,
-            initialAuthMode: widget.initialAuthMode,
-          ),
+          create:
+              (context) => Auth(
+                onLogin: widget.onLogin,
+                onSignup: widget.onSignup,
+                onRecoverPassword: widget.onRecoverPassword,
+                onRecoverWithTwoFields: widget.onRecoverTwoFields,
+                loginProviders: widget.loginProviders,
+                email: widget.savedEmail,
+                password: widget.savedPassword,
+                confirmPassword: widget.savedPassword,
+                onConfirmRecover: widget.onConfirmRecover,
+                onConfirmSignup: widget.onConfirmSignup,
+                onResendCode: widget.onResendCode,
+                termsOfService: widget.termsOfService,
+                initialAuthMode: widget.initialAuthMode,
+              ),
         ),
       ],
       child: Scaffold(
@@ -846,9 +860,11 @@ class _FlutterLoginState extends State<FlutterLogin>
                       child: _buildHeader(headerHeight, loginTheme),
                     ),
                     Positioned.fill(
-                        child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: footerWidget)),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: footerWidget,
+                      ),
+                    ),
                     ...?widget.children,
                   ],
                 ),
